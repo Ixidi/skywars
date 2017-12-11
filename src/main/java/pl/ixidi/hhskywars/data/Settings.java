@@ -37,6 +37,9 @@ public class Settings {
     }
 
     public static Settings getInstance() {
+        if (instance == null) {
+            instance = new Settings();
+        }
         return instance;
     }
 

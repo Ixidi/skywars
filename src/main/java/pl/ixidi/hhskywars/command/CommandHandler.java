@@ -52,9 +52,11 @@ public class CommandHandler implements CommandExecutor{
         return aliases;
     }
 
-    public void addSecondHandler(CommandHandler handler) {
-        handler.parent = this;
-        secondHandlers.put(handler.getName(), handler);
+    public void addSecondHandler(CommandHandler... handlers) {
+        for (CommandHandler handler : handlers) {
+            handler.parent = this;
+            secondHandlers.put(handler.getName(), handler);
+        }
     }
 
     public void setDescription(String description) {
@@ -75,6 +77,10 @@ public class CommandHandler implements CommandExecutor{
 
     public boolean isPlayerOnly() {
         return playerOnly;
+    }
+
+    public CommandHandler getParent() {
+        return parent;
     }
 
     @Override

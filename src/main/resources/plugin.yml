@@ -1,0 +1,4 @@
+name: HHSkyWars
+main: pl.ixidi.hhskywars.SkyWarsPlugin
+version: 1.0
+author: Ixidi

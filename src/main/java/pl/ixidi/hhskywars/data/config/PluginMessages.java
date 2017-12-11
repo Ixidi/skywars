@@ -7,5 +7,6 @@ public class PluginMessages {
     public String commandNotFound = "&cNie znaleziono komendy. Lista komend pod &7/{COMMAND}&c.";
     public String arrayException = "&cNieobslugiwana liczba argumentow!";
     public String noCommands = "&cBrak komend dostepnych dla ciebie!";
+    public String commandUsage = "&cPoprawne uzycie: &7/{USAGE}&c.";
 
 }

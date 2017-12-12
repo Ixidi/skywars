@@ -26,12 +26,12 @@ public class ArenaValidateExec implements Executor {
         Validator.ArenaResult result = Validator.validateArena(arena);
         if (!result.isValidated()) {
             arena.setValidated(false);
-            sender.sendMessage(StringUtils.color("&cArena nie zostala zweryfikowana."));
+            sender.sendMessage(StringUtils.color("&cArena nie zostala dopuszczona."));
             sender.sendMessage(StringUtils.color("&cPowod: &7"+result.getCause()+"&c."));
             return;
         }
         arena.setValidated(true);
-        sender.sendMessage(StringUtils.color("&aArena zostala zweryfikowana!"));
+        sender.sendMessage(StringUtils.color("&aArena zostala dopuszczona!"));
     }
 
 }

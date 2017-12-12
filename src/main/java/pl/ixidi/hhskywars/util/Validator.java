@@ -28,7 +28,7 @@ public final class Validator {
             if (validated) {
                 validated = false;
             }
-            builder.append("Nie ustawione punkty spawn ow ");
+            builder.append("Nie ustawione punkty spawnow ");
             for (int i = 0; i < unsetSpawns.size(); i++) {
                 builder.append(unsetSpawns.get(i));
                 if (i != unsetSpawns.size()) {

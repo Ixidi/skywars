@@ -6,8 +6,6 @@ import pl.ixidi.hhskywars.basic.util.ArenaUtils;
 import pl.ixidi.hhskywars.command.CommandHandler;
 import pl.ixidi.hhskywars.command.CommandUtils;
 import pl.ixidi.hhskywars.command.Executor;
-import pl.ixidi.hhskywars.data.Settings;
-import pl.ixidi.hhskywars.data.config.PluginMessages;
 import pl.ixidi.hhskywars.util.IntegerUtils;
 import pl.ixidi.hhskywars.util.StringUtils;
 
@@ -33,7 +31,7 @@ public class ArenaCreateExec implements Executor {
         ArenaUtils.add(arena);
         sender.sendMessage(StringUtils.color("&aStworzono arene o nazwie " + name + "&a! \n"
                                                 + "&aWrzuc teraz pliki mapy do &7" + arena.getFiles().getMap().getPath() + "&a, a nastepnie ustaw wszystkie punkty spawnu mapy. \n"
-                                                + "&aPo tych czynnosciach wykonaj weryfikacje komenda &7validate&a."));
+                                                + "&aPo tych czynnosciach system musi dopuscic arene. Uzyj &7/... validate&a."));
     }
 
 }

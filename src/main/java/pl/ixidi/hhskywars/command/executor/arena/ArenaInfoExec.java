@@ -24,7 +24,7 @@ public class ArenaInfoExec implements Executor {
             sender.sendMessage(StringUtils.color("&cArena o nazwie &7" + name + " &cnie istnieje!"));
             return;
         }
-        sender.sendMessage(StringUtils.color("&8Informacje o arenie &7" + arena.getName() + "&8&l:\n"
+        sender.sendMessage(StringUtils.color("&8&lInformacje o arenie &7" + arena.getName() + "&8&l:\n"
                                                 + " &7-> &aCzas stworzenia: &7" + arena.getCreatedTime() + "\n"
                                                 + " &7-> &aLiczba graczy: &7" + arena.getMaxPlayers() + "\n"
                                                 + " &7-> &aPunkty spawnow:"));
@@ -33,7 +33,7 @@ public class ArenaInfoExec implements Executor {
             Location location = spawns[i];
             sender.sendMessage(StringUtils.color(" &7->  &8- &a" + (i + 1) + " " + (location != null ? "&2" + LocationUtils.toLocationString(location) + "." : "&4Nie ustawiony!")));
         }
-        sender.sendMessage(StringUtils.color(" &7-> &aZweryfikowana: " + (arena.isValidated() ? "&2TAK" : "&4NIE")));
+        sender.sendMessage(StringUtils.color(" &7-> &aDopuszczona: " + (arena.isValidated() ? "&2TAK" : "&4NIE")));
     }
 
 }

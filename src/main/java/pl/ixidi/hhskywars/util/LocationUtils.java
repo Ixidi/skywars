@@ -31,6 +31,13 @@ public final class LocationUtils {
         return world + ";" + x + ";" + y + ";" + z;
     }
 
+    public static String toLocationString(Location location) {
+        double x = location.getX();
+        double y = location.getY();
+        double z = location.getZ();
+        return "X: " + x + " Y: " + y + " Z: " + z;
+    }
+
     private LocationUtils() { }
 
 }

@@ -43,7 +43,7 @@ public class ListExec implements Executor {
             sender.sendMessage(Settings.getInstance().getMessages().noCommands);
             return;
         }
-        sender.sendMessage(StringUtils.color(" &7-> &a/"+prefix+""));
+        sender.sendMessage(StringUtils.color(" &7-> &a&l/"+prefix+""));
         avalibleHandlers.forEach((name, second) -> sender.sendMessage(StringUtils.color(" &7-> &a" + name + " - "+second.getDescription())));
     }
 

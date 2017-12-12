@@ -1,5 +1,7 @@
 package pl.ixidi.hhskywars.basic;
 
+import pl.ixidi.hhskywars.util.FileUtils;
+
 import java.io.File;
 
 public class ArenaFiles {
@@ -10,8 +12,11 @@ public class ArenaFiles {
 
     public ArenaFiles(File root) {
         this.root = root;
-        this.map = map;
-        this.arenaData = arenaData;
+        String path = root.getPath();
+        this.map = new File(path + File.separator, "mapFiles");
+        this.arenaData = new File(path + File.separator + "arenaData.yml");
+        map.mkdirs();
+        FileUtils.createIfNotExists(arenaData);
     }
 
     public File getRoot() {

@@ -1,4 +1,7 @@
 package pl.ixidi.hhskywars.basic.util;
 
-public class UserUtils {
+public final class UserUtils {
+
+    private UserUtils() { }
+
 }

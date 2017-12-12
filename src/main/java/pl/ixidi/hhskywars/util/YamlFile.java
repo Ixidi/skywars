@@ -13,11 +13,8 @@ public class YamlFile extends YamlConfiguration {
     public YamlFile(File file) {
         super();
         this.file = file;
+        FileUtils.createIfNotExists(file);
         try {
-            if (!file.exists()) {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            }
             super.load(file);
         } catch (IOException | InvalidConfigurationException ex) {
             LogUtils.exception(ex);

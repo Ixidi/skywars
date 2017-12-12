@@ -108,11 +108,16 @@ public class CommandHandler implements CommandExecutor{
                 System.arraycopy(args, 1, newArgs, 0, newArgs.length);
                 return secondHandler.onCommand(commandSender, command, s, newArgs);
             }
-            StringBuilder builder = new StringBuilder();
             CommandHandler checkerHandler = this;
+            List<String> subcommands = new ArrayList<>();
             while (checkerHandler != null) {
-                builder.append(checkerHandler.name);
-                if ((checkerHandler = checkerHandler.parent) != null) {
+                subcommands.add(checkerHandler.getName());
+                checkerHandler = checkerHandler.parent;
+            }
+            StringBuilder builder = new StringBuilder();
+            for (int i = subcommands.size() - 1; i >= 0; i--) {
+                builder.append(subcommands.get(i));
+                if (i > 0) {
                     builder.append(" ");
                 }
             }

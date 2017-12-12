@@ -8,5 +8,4 @@ public class PluginMessages {
     public String arrayException = "&cNieobslugiwana liczba argumentow!";
     public String noCommands = "&cBrak komend dostepnych dla ciebie!";
     public String commandUsage = "&cPoprawne uzycie: &7/{USAGE}&c.";
-
 }

@@ -108,20 +108,7 @@ public class CommandHandler implements CommandExecutor{
                 System.arraycopy(args, 1, newArgs, 0, newArgs.length);
                 return secondHandler.onCommand(commandSender, command, s, newArgs);
             }
-            CommandHandler checkerHandler = this;
-            List<String> subcommands = new ArrayList<>();
-            while (checkerHandler != null) {
-                subcommands.add(checkerHandler.getName());
-                checkerHandler = checkerHandler.parent;
-            }
-            StringBuilder builder = new StringBuilder();
-            for (int i = subcommands.size() - 1; i >= 0; i--) {
-                builder.append(subcommands.get(i));
-                if (i > 0) {
-                    builder.append(" ");
-                }
-            }
-            commandSender.sendMessage(StringUtils.replace(messages.commandNotFound, "{COMMAND}", builder.toString()));
+            commandSender.sendMessage(StringUtils.replace(messages.commandNotFound, "{COMMAND}", CommandUtils.getParentsAsString(this)));
             return true;
         }
         try {

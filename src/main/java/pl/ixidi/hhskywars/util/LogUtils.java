@@ -22,7 +22,7 @@ public final class LogUtils {
 
     public static void exception(Exception exception) {
         error("Error!");
-        error("Caused by:" + exception.getCause().toString());
+        error("Caused by: " + exception.getMessage());
         error("Stack trace: ");
         for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
             error(stackTraceElement.toString());

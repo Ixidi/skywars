@@ -3,6 +3,7 @@ package pl.ixidi.hhskywars.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public final class FileUtils {
 
@@ -20,6 +21,19 @@ public final class FileUtils {
                     LogUtils.exception(ex);
                 }
             }
+        }
+    }
+
+    public static void deleteAll(File directory) {
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            if (files == null) {
+                directory.delete();
+                return;
+            }
+            Arrays.asList(files).forEach(FileUtils::deleteAll);
+        } else {
+            directory.delete();
         }
     }
 

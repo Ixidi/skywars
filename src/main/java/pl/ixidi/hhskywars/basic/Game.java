@@ -3,6 +3,7 @@ package pl.ixidi.hhskywars.basic;
 import org.bukkit.Location;
 import pl.ixidi.hhskywars.SkyWarsPlugin;
 import pl.ixidi.hhskywars.basic.util.ArenaUtils;
+import pl.ixidi.hhskywars.util.FileUtils;
 import pl.ixidi.hhskywars.util.LogUtils;
 
 import java.io.File;
@@ -26,8 +27,12 @@ public class Game {
 
     public Game(int id) {
         this.id = id;
-        this.state = GameState.WAITING;
-        this.mapFolder = new File(SkyWarsPlugin.getPlugin(SkyWarsPlugin.class).getServer().getWorldContainer(), "game"+id);
+        this.state = GameState.DISABLED;
+        this.mapFolder = new File(SkyWarsPlugin.getPlugin(SkyWarsPlugin.class).getServer().getWorldContainer(), "game_"+id);
+        if (mapFolder.exists()) {
+            FileUtils.deleteAll(mapFolder);
+        }
+        this.mapFolder.mkdirs();
     }
 
     public int getId() {
@@ -79,39 +84,54 @@ public class Game {
     }
 
     public void startTask() {
-        if (this.task == null) {
-            Arena randomArena = ArenaUtils.getRandom();
-            if (randomArena == null) {
-                LogUtils.error("Task gry " + this.id + " nie mogl wystartowac. Brak jakichkolwiek aren.");
-                return;
-            }
-            if (!randomArena.isValidated()) {
-                LogUtils.warning("Arena " + randomArena.getName() + " zostala wylosowana przez gre " + this.id + ", ale nie jest zweryfikowana.");
-                LogUtils.warning("Proba zamiany na inna arene...");
-                for (Arena checkArena : ArenaUtils.getArenaMap().values()) {
-                    if (checkArena.isValidated()) {
-                        this.arena = checkArena;
-                        break;
-                    }
-                }
-                if (this.arena == null) {
-                    LogUtils.error("Task gry " + this.id + " nie mogl wystartowac. Brak zweryfikowanych aren.");
-                    return;
-                }
-                LogUtils.warning("Arena dla gry " + this.id + " zostala zmieniona na " + this.arena.getName()+".");
-            } else {
-                this.arena = randomArena;
-            }
-            this.freeSpawns.addAll(Arrays.asList(this.arena.getSpawns()));
-            this.task = new GameTask(this);
-            this.task.runTaskTimer(SkyWarsPlugin.getPlugin(SkyWarsPlugin.class), 0, 20);
+        if (this.task != null) {
+            return;
         }
+        if (!prepareArena()) {
+            this.state = GameState.DISABLED;
+            return;
+        }
+        this.task = new GameTask(this);
+        this.task.runTaskTimer(SkyWarsPlugin.getPlugin(SkyWarsPlugin.class), 0, 20);
+        this.state = GameState.WAITING;
+        LogUtils.info("Uruchomiono task gry " + this.id + ".");
     }
 
     public void stopTask() {
-        if (this.task != null) {
-            this.task.cancel();
-            this.task = null;
+        if (this.task == null) {
+            return;
         }
+        this.task.cancel();
+        this.task = null;
+        this.arena = null;
+        this.state = GameState.DISABLED;
+        FileUtils.deleteAll(this.mapFolder);
+    }
+
+    boolean prepareArena() {
+        this.state = GameState.PREPARING;
+        Arena randomArena = ArenaUtils.getRandom();
+        if (randomArena == null) {
+            LogUtils.error("Task gry " + this.id + " nie mogl wystartowac. Brak jakichkolwiek aren.");
+            return false;
+        }
+        if (!randomArena.isValidated()) {
+            LogUtils.warning("Arena " + randomArena.getName() + " zostala wylosowana przez gre " + this.id + ", ale nie jest zweryfikowana.");
+            for (Arena checkArena : ArenaUtils.getArenaMap().values()) {
+                if (checkArena.isValidated()) {
+                    this.arena = checkArena;
+                    break;
+                }
+            }
+            if (this.arena == null) {
+                LogUtils.error("Task gry " + this.id + " nie mogl wystartowac. Brak zweryfikowanych aren.");
+                return false;
+            }
+            LogUtils.warning("Arena dla gry " + this.id + " zostala zmieniona na " + this.arena.getName()+".");
+        } else {
+            this.arena = randomArena;
+        }
+        this.freeSpawns.addAll(Arrays.asList(this.arena.getSpawns()));
+        return true;
     }
 }

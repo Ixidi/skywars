@@ -8,8 +8,9 @@ public class User {
     private UUID uuid;
 
     private int points;
+
     private int tokens;
-    private int money;
+    private int coins;
 
     private int kills;
     private int deaths;
@@ -18,13 +19,20 @@ public class User {
 
     private Game game;
 
-    private boolean loaded;
-    private boolean changed;
-
-    public User(String name, UUID uuid) {
-        this.name = name;
+    public User(UUID uuid) {
         this.uuid = uuid;
-        this.loaded = false;
+
+        this.points = 0;
+        this.tokens = 0;
+        this.coins = 0;
+        this.kills = 0;
+        this.deaths = 0;
+        this.gamesPlayed = 0;
+        this.gamesWon = 0;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getName() {
@@ -41,9 +49,6 @@ public class User {
 
     public void setPoints(int points) {
         this.points = points;
-        if (this.loaded && !this.changed) {
-            this.changed = true;
-        }
     }
 
     public int getTokens() {
@@ -52,20 +57,6 @@ public class User {
 
     public void setTokens(int tokens) {
         this.tokens = tokens;
-        if (this.loaded && !this.changed) {
-            this.changed = true;
-        }
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-        if (this.loaded && !this.changed) {
-            this.changed = true;
-        }
     }
 
     public int getKills() {
@@ -74,9 +65,6 @@ public class User {
 
     public void setKills(int kills) {
         this.kills = kills;
-        if (this.loaded && !this.changed) {
-            this.changed = true;
-        }
     }
 
     public int getDeaths() {
@@ -85,9 +73,6 @@ public class User {
 
     public void setDeaths(int deaths) {
         this.deaths = deaths;
-        if (this.loaded && !this.changed) {
-            this.changed = true;
-        }
     }
 
     public int getGamesPlayed() {
@@ -96,9 +81,6 @@ public class User {
 
     public void setGamesPlayed(int gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
-        if (this.loaded && !this.changed) {
-            this.changed = true;
-        }
     }
 
     public int getGamesWon() {
@@ -107,9 +89,6 @@ public class User {
 
     public void setGamesWon(int gamesWon) {
         this.gamesWon = gamesWon;
-        if (this.loaded && !this.changed) {
-            this.changed = true;
-        }
     }
 
     public Game getGame() {
@@ -118,16 +97,13 @@ public class User {
 
     public void setGame(Game game) {
         this.game = game;
-        if (this.loaded && !this.changed) {
-            this.changed = true;
-        }
     }
 
-    public boolean isChanged() {
-        return changed;
+    public int getCoins() {
+        return coins;
     }
 
-    public void loaded() {
-        this.loaded = true;
+    public void setCoins(int coins) {
+        this.coins = coins;
     }
 }

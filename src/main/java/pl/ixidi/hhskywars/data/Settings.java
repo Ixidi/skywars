@@ -24,6 +24,7 @@ public class Settings {
         } catch (IllegalAccessException ex) {
             LogUtils.exception(ex);
         }
+
     }
 
     private void colorMessages() throws IllegalAccessException {
@@ -38,7 +39,7 @@ public class Settings {
 
     public static Settings getInstance() {
         if (instance == null) {
-            instance = new Settings();
+            return new Settings();
         }
         return instance;
     }

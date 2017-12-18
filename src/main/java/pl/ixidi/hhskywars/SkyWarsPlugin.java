@@ -4,15 +4,22 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.ixidi.hhskywars.basic.Arena;
+import pl.ixidi.hhskywars.basic.Game;
 import pl.ixidi.hhskywars.basic.util.ArenaUtils;
+import pl.ixidi.hhskywars.basic.util.GameUtils;
 import pl.ixidi.hhskywars.command.CommandHandler;
 import pl.ixidi.hhskywars.command.CommandManager;
 import pl.ixidi.hhskywars.command.executor.ListExec;
+import pl.ixidi.hhskywars.command.executor.UserInfoExec;
 import pl.ixidi.hhskywars.command.executor.arena.*;
 import pl.ixidi.hhskywars.command.executor.game.GameCreateExec;
 import pl.ixidi.hhskywars.command.executor.game.GameListExec;
+import pl.ixidi.hhskywars.data.DataManager;
 import pl.ixidi.hhskywars.data.Settings;
+import pl.ixidi.hhskywars.listener.PlayerQuitListener;
+import pl.ixidi.hhskywars.listener.PreLoginListener;
 import pl.ixidi.hhskywars.util.Validator;
+import pl.ixidi.hhskywars.util.YamlFile;
 
 import java.io.File;
 
@@ -27,12 +34,22 @@ public class SkyWarsPlugin extends JavaPlugin {
             mapsFolder.mkdirs();
         }
         this.commandManager = new CommandManager(this);
-        new Settings();
+        Settings settings = new Settings();
+
+        new DataManager();
+
         this.listeners();
         this.commands();
+
         ArenaUtils.getArenaMap().values().stream()
                 .filter(arena -> Validator.validateArena(arena).isValidated())
                 .forEach(arena -> arena.setValidated(true));
+
+        for (int i = 0; i < settings.getConfig().gamesCount; i++) {
+            Game game = new Game(GameUtils.getGameMap().size() + 1);
+            game.startTask();
+            GameUtils.add(game);
+        }
     }
 
     @Override
@@ -70,12 +87,18 @@ public class SkyWarsPlugin extends JavaPlugin {
 
         //MAIN
         CommandHandler main = new CommandHandler("skywarsadmin", new ListExec(), "skywars.admin", false, "swa");
-        main.addSecondHandler(aMain, gMain);
+
+        CommandHandler infoM = new CommandHandler("userinfo", new UserInfoExec(), "skywars.admin", false);
+
+        main.addSecondHandler(infoM, aMain, gMain);
         this.commandManager.registerCommand(main);
     }
 
     private void listeners() {
         PluginManager manager = this.getServer().getPluginManager();
+        manager.registerEvents(new PreLoginListener(), this);
+        manager.registerEvents(new PlayerQuitListener(), this);
+        manager.registerEvents(new PreLoginListener(), this);
     }
 
     public CommandManager getCommandManager() {

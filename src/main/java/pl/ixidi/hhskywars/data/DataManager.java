@@ -2,18 +2,25 @@ package pl.ixidi.hhskywars.data;
 
 import pl.ixidi.hhskywars.SkyWarsPlugin;
 import pl.ixidi.hhskywars.data.config.PluginConfig;
+import pl.ixidi.hhskywars.data.data.ArenaData;
 import pl.ixidi.hhskywars.data.data.UserData;
+import pl.ixidi.hhskywars.util.FileUtils;
+
+import java.io.File;
 
 public class DataManager {
 
     private static DataManager instance;
+    public static final File ARENAS_FOLDER = new File(SkyWarsPlugin.getPlugin(SkyWarsPlugin.class).getDataFolder(), "arenas");
 
     private MySQL mySQLSkyWars;
     private MySQL mySQLCoins;
     private UserData userData;
+    private ArenaData arenaData;
 
     public DataManager() {
         instance = this;
+        FileUtils.createFolder(ARENAS_FOLDER);
         PluginConfig c = Settings.getInstance().getConfig();
         this.mySQLSkyWars = new MySQL(c.mysqlSwHost, c.mysqlSwPort, c.mysqlSwUser, c.mysqlSwPassword, c.mysqlSwDatabase, c.mysqlSwPool);
         if (c.mysqlSwHost.equals(c.mysqlCoinsHost) && c.mysqlSwUser.equals(c.mysqlCoinsUser) && c.mysqlSwPassword.equals(c.mysqlCoinsPassword) && c.mysqlSwDatabase.equals(c.mysqlCoinsDatabase)) {
@@ -22,6 +29,7 @@ public class DataManager {
             this.mySQLCoins = new MySQL(c.mysqlCoinsHost, c.mysqlCoinsPort, c.mysqlCoinsUser, c.mysqlCoinsPassword, c.mysqlCoinsDatabase, c.mysqlCoinsPool);
         }
         this.userData = new UserData(this.mySQLSkyWars, this.mySQLCoins);
+        this.arenaData = new ArenaData(ARENAS_FOLDER);
         this.usersTable();
         this.coinsTable();
     }
@@ -60,4 +68,9 @@ public class DataManager {
                 "PRIMARY KEY (uuid));";
         this.mySQLCoins.update(query);
     }
+
+    public ArenaData getArenaData() {
+        return arenaData;
+    }
+
 }

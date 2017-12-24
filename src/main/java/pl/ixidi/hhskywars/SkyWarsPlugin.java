@@ -18,6 +18,7 @@ import pl.ixidi.hhskywars.data.DataManager;
 import pl.ixidi.hhskywars.data.Settings;
 import pl.ixidi.hhskywars.listener.PlayerQuitListener;
 import pl.ixidi.hhskywars.listener.PreLoginListener;
+import pl.ixidi.hhskywars.listener.WorldChangeListener;
 import pl.ixidi.hhskywars.util.Validator;
 import pl.ixidi.hhskywars.util.YamlFile;
 
@@ -29,17 +30,15 @@ public class SkyWarsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        File mapsFolder = new File(this.getDataFolder().getPath(), "maps");
-        if (!mapsFolder.exists()) {
-            mapsFolder.mkdirs();
-        }
         this.commandManager = new CommandManager(this);
         Settings settings = new Settings();
 
-        new DataManager();
+        DataManager dataManager = new DataManager();
 
         this.listeners();
         this.commands();
+
+        dataManager.getArenaData().loadArenas().forEach(ArenaUtils::add);
 
         ArenaUtils.getArenaMap().values().stream()
                 .filter(arena -> Validator.validateArena(arena).isValidated())
@@ -54,7 +53,9 @@ public class SkyWarsPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        ArenaUtils.getArenaMap().forEach((name, arena) -> {
+            DataManager.getInstance().getArenaData().saveArena(arena);
+        });
     }
 
 
@@ -72,8 +73,10 @@ public class SkyWarsPlugin extends JavaPlugin {
         aVaidate.setDescription("Weryfikuje arene.");
         CommandHandler aSetspawn = new CommandHandler("setspawn", new ArenaSetspawnExec(), "skywars.admin", true);
         aSetspawn.setDescription("Ustawia jeden ze spawnow areny.");
+        CommandHandler aTestworld = new CommandHandler("testworld", new ArenaTestworldExec(), "skywars.admin", true);
+        aTestworld.setDescription("Tworzy testowy swiat dla danej areny.");
 
-        aMain.addSecondHandler(aCreate, aList, aInfo, aVaidate, aSetspawn);
+        aMain.addSecondHandler(aCreate, aList, aInfo, aVaidate, aSetspawn, aTestworld);
 
         //GAME
         CommandHandler gMain = new CommandHandler("game", new ListExec(), "skywars.admin", false);
@@ -99,6 +102,7 @@ public class SkyWarsPlugin extends JavaPlugin {
         manager.registerEvents(new PreLoginListener(), this);
         manager.registerEvents(new PlayerQuitListener(), this);
         manager.registerEvents(new PreLoginListener(), this);
+        manager.registerEvents(new WorldChangeListener(), this);
     }
 
     public CommandManager getCommandManager() {

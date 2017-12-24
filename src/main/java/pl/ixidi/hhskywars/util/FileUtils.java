@@ -7,16 +7,18 @@ import java.util.Arrays;
 
 public final class FileUtils {
 
+    public static void createFolder(File... files) {
+        for (File file : files) {
+            file.mkdirs();
+        }
+    }
+
     public static void createIfNotExists(File... files) {
         for (File file : files) {
             if (!file.exists()) {
                 try {
-                    if (file.isDirectory()) {
-                        file.mkdirs();
-                    } else {
-                        file.getParentFile().mkdirs();
-                        file.createNewFile();
-                    }
+                    file.getParentFile().mkdirs();
+                    file.createNewFile();
                 } catch (IOException ex) {
                     LogUtils.exception(ex);
                 }

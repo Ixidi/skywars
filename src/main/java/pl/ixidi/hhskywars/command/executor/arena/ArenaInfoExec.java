@@ -25,7 +25,6 @@ public class ArenaInfoExec implements Executor {
             return;
         }
         sender.sendMessage(StringUtils.color("&8&lInformacje o arenie &7" + arena.getName() + "&8&l:\n"
-                                                + " &7-> &aCzas stworzenia: &7" + arena.getCreatedTime() + "\n"
                                                 + " &7-> &aLiczba graczy: &7" + arena.getMaxPlayers() + "\n"
                                                 + " &7-> &aPunkty spawnow:"));
         Location[] spawns = arena.getSpawns();

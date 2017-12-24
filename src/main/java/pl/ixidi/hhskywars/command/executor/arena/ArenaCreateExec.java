@@ -30,7 +30,7 @@ public class ArenaCreateExec implements Executor {
         Arena arena = new Arena(name, maxPlayers);
         ArenaUtils.add(arena);
         sender.sendMessage(StringUtils.color("&aStworzono arene o nazwie " + name + "&a! \n"
-                                                + "&aWrzuc teraz pliki mapy do &7" + arena.getFiles().getMap().getPath() + "&a, a nastepnie ustaw wszystkie punkty spawnu mapy. \n"
+                                                + "&aWrzuc teraz pliki mapy do &7" + arena.getMap().getPath() + "&a, a nastepnie ustaw wszystkie punkty spawnu mapy. \n"
                                                 + "&aPo tych czynnosciach system musi dopuscic arene. Uzyj &7/... validate&a."));
     }
 

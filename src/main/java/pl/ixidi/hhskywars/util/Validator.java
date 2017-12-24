@@ -13,7 +13,7 @@ public final class Validator {
     public static ArenaResult validateArena(Arena arena) {
         StringBuilder builder = new StringBuilder();
         boolean validated = true;
-        if (!WorldUtils.isValidWorld(arena.getFiles().getMap())) {
+        if (!WorldUtils.isValidWorld(arena.getMap(), false)) {
             builder.append("Bledne pliki mapy. ");
             validated = false;
         }

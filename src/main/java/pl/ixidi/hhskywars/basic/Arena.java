@@ -4,14 +4,16 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import pl.ixidi.hhskywars.SkyWarsPlugin;
+import pl.ixidi.hhskywars.data.DataManager;
+import pl.ixidi.hhskywars.util.FileUtils;
 
 import java.io.File;
 
-public class Arena {
+public class Arena implements Cloneable {
 
     private String name;
-    private ArenaFiles files;
-    private long createdTime;
+
+    private File map;
 
     private int maxPlayers;
     private Location[] spawns;
@@ -20,19 +22,15 @@ public class Arena {
     public Arena(String name, int maxPlayers) {
         this.name = name;
         this.maxPlayers = maxPlayers;
-        File root = new File(SkyWarsPlugin.getPlugin(SkyWarsPlugin.class).getDataFolder().getPath() + File.separator + "maps" + File.separator + name);
-        this.files = new ArenaFiles(root);
         this.spawns = new Location[maxPlayers];
-        this.createdTime = System.currentTimeMillis();
         this.validated = false;
+        File root = new File(DataManager.ARENAS_FOLDER, name);
+        this.map = new File(root, "map");
+        FileUtils.createFolder(this.map);
     }
 
     public String getName() {
         return name;
-    }
-
-    public ArenaFiles getFiles() {
-        return files;
     }
 
     public Location[] getSpawns() {
@@ -41,10 +39,6 @@ public class Arena {
 
     public int getMaxPlayers() {
         return maxPlayers;
-    }
-
-    public long getCreatedTime() {
-        return createdTime;
     }
 
     public boolean isValidated() {
@@ -61,5 +55,14 @@ public class Arena {
             return true;
         }
         return false;
+    }
+
+    public File getMap() {
+        return map;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

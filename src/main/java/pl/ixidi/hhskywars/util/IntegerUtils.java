@@ -15,6 +15,19 @@ public final class IntegerUtils {
         return toReturn;
     }
 
+    public static Integer toNoNegativeInteger(String text) {
+        Integer toReturn;
+        try {
+            toReturn = Integer.parseInt(text);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+        if (toReturn < 0) {
+            return null;
+        }
+        return toReturn;
+    }
+
     private IntegerUtils() { }
 
 }
